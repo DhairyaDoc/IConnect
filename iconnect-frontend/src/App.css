@@ -1,0 +1,115 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.top {
+  margin-top: 4rem;
+}
+.center {
+  margin: auto;
+}
+.MuiInputBase-input,
+.Mui-focused,
+.MuiInput-underline {
+  border-bottom: 0 !important;
+}
+.upload__image-wrapper{
+  align-items: center;
+}
+.errorsContainer{
+  color: red;
+}
+.DnDbtn {
+  padding: 4px 23px;
+  background: #4a5568;
+  border-radius: 30px;
+  color: white;
+  font-weight: 300;
+  font-size: 14px;
+  margin: 10px 0;
+  transition: all 0.2s ease-in;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+.uploadIcon {
+  margin: auto;
+  width: 46px;
+  height: 53px;
+}
+.imgLabel {
+  font-size: 0.8em;
+  padding: 0;
+  margin: 0;
+}
+.uploadPicturesWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+.uploadPictureContainer {
+  width: 25%;
+  margin: 5%;
+  padding: 10px;
+  background: #edf2f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: inherit;
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d0dbe4;
+  position: relative;
+}
+.deleteImage {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  color: #fff;
+  background: #4a5568;
+  border-radius: 60%;
+  text-align: center;
+  cursor: pointer;
+  font-size: 18px;
+
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

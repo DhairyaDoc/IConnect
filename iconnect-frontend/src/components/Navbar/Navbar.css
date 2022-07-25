@@ -1,0 +1,17 @@
+a {
+  color: white !important;
+}
+
+.brand-logo {
+  margin-left: 10px;
+}
+
+button {
+  margin-right: 10px;
+}
+
+.listItemText {
+  color: black;
+  font-size: 25px;
+}
+

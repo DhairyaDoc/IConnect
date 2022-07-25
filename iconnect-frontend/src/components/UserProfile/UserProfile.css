@@ -1,0 +1,44 @@
+.div-card {
+    max-width: 1000px;
+    margin: 0px auto;
+}
+
+.user-info-card {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    border: 1px solid blue;
+    margin: 20px 0px;
+}
+
+.user-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 100%;
+}
+
+.field-name {
+    font-weight: bold;
+}
+
+.div-button {
+    margin: 20px 0;
+    width: 100%;
+}
+
+.profile-edit-button {
+    color: #000;
+    font-weight: 500;
+    width: 100%;
+}
+
+.funding-card, .idea-card {
+    border: 1px solid blue;
+    padding: 10px 20px;
+    border: 1px solid blue;
+    margin: 20px 0px;
+}
+
+.user-postings-heading {
+    font-weight: bold;
+}

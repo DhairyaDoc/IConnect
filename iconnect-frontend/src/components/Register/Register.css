@@ -1,0 +1,27 @@
+.register-card {
+  padding: 20px;
+  text-align: center;
+  max-width: 600px;
+  margin: 70px auto;
+}
+
+h3 {
+  text-transform: uppercase;
+}
+
+.register-btn {
+  margin-top: 10px;
+}
+
+.navigation-link {
+  color: black !important;
+  text-decoration: underline;
+}
+
+.radioGroup {
+  margin-top: 10px !important;
+}
+
+.radioGroup label {
+  color: black;
+}

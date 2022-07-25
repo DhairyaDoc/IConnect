@@ -1,0 +1,23 @@
+.page-not-found {
+  margin-top: 120px;
+}
+
+.page-not-found .image404 {
+  height: 500px;
+  width: 500px;
+  margin: auto 16%;
+}
+
+.rotate {
+  animation: rotateInAnim 3s infinite;
+}
+
+@keyframes rotateInAnim {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

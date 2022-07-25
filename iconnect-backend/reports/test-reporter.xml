@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+    <file path="C:\ASDC project\group17\iconnect-backend\src\controllers\fundingControllers\funding.test.js">
+        <testCase name="investments API invest " duration="15"/>
+        <testCase name="investments API withDrawInvestment " duration="207"/>
+        <testCase name="investments API updateInvestment " duration="7"/>
+        <testCase name="investments API getReceivedInvestments " duration="107"/>
+        <testCase name="investments API viewDetails fail" duration="5"/>
+    </file>
+    <file path="C:\ASDC project\group17\iconnect-backend\src\controllers\investmentController\investment.test.js">
+        <testCase name="investments API invest " duration="18"/>
+        <testCase name="investments API withDrawInvestment " duration="218"/>
+        <testCase name="investments API updateInvestment " duration="8"/>
+        <testCase name="investments API getReceivedInvestments " duration="108"/>
+        <testCase name="investments API Get all the investments a user made" duration="114"/>
+        <testCase name="investments API Should respond with error message with provided with wrong userID" duration="5"/>
+    </file>
+    <file path="C:\ASDC project\group17\iconnect-backend\src\controllers\authControllers\auth.test.js">
+        <testCase name="Auth API login success" duration="2722"/>
+        <testCase name="Auth API login fail wrong password" duration="340"/>
+        <testCase name="Auth API login fail unregistered user" duration="104"/>
+        <testCase name="Auth API oauth login success " duration="318"/>
+        <testCase name="Auth API oauth login fail " duration="6"/>
+        <testCase name="Auth API forgotPassword success" duration="4"/>
+        <testCase name="Auth API forgotPassword fail" duration="5"/>
+        <testCase name="Auth API forgotPassword fail" duration="5"/>
+        <testCase name="Auth API forgotPassword fail" duration="109"/>
+        <testCase name="Auth API resetPassword fail" duration="6"/>
+        <testCase name="Auth API validateToken" duration="8"/>
+    </file>
+    <file path="C:\ASDC project\group17\iconnect-backend\src\controllers\ideaControllers\idea.test.js">
+        <testCase name="idea API postIdea " duration="39"/>
+        <testCase name="idea API deleteIdea " duration="122"/>
+        <testCase name="idea API updateIdea " duration="7"/>
+        <testCase name="idea API getIdea pass" duration="1177"/>
+        <testCase name="idea API getIdea fail" duration="8"/>
+        <testCase name="idea API searchIdea pass" duration="135"/>
+        <testCase name="idea API searchIdea fail" duration="20"/>
+        <testCase name="idea API contactForm success" duration="274"/>
+        <testCase name="idea API contactForm fail" duration="7"/>
+        <testCase name="idea API Get Ideas API Test" duration="121"/>
+    </file>
+    <file path="C:\ASDC project\group17\iconnect-backend\src\controllers\userController\user.test.js">
+        <testCase name="Test user profile API Changes the premium field of a user" duration="132"/>
+        <testCase name="Test user profile API Changes the premium field of a user - make Silver member" duration="115"/>
+        <testCase name="Test user profile API Changes the premium field of a user - make Gold member" duration="124"/>
+        <testCase name="Test user profile API Changes the premium field of a user - make Platinum member" duration="120"/>
+    </file>
+    <file path="C:\ASDC project\group17\iconnect-backend\src\controllers\investmentController\newInvestment.test.js">
+        <testCase name="Investment API Testing Get Pending Investment API Test" duration="143"/>
+        <testCase name="Investment API Testing Get Non Pending Investment API Test" duration="121"/>
+        <testCase name="Investment API Testing Get Investment Request" duration="122"/>
+        <testCase name="Investment API Testing Accept Investment API Test" duration="8"/>
+        <testCase name="Investment API Testing Reject Investment API Test" duration="5"/>
+        <testCase name="Investment API Testing Get Investment For Payment" duration="119"/>
+    </file>
+</testExecutions>

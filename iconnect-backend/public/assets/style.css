@@ -1,0 +1,109 @@
+html,
+body {
+  width: 100%;
+  font-family: helvetica, "helvetica neue", arial, verdana, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  padding: 0;
+  margin: 0;
+}
+body * {
+  box-sizing: border-box;
+}
+.container {
+  max-width: 400px;
+  padding: 10px;
+  margin: auto;
+}
+.cf-logo {
+  text-align: center;
+}
+.cf-logo img {
+  margin: auto;
+  max-height: 66px;
+}
+.cf-succ {
+  display: none;
+}
+.cf-info h1,
+.cf-succ h1 {
+  font-size: 16px;
+  line-height: 24px;
+  color: #0f0f0f;
+  text-transform: uppercase;
+  text-align: left;
+  max-width: 400px;
+  margin: 30px auto;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.cf-info h1::after,
+.cf-succ h1::after {
+  content: "";
+  width: 40px;
+  height: 2px;
+  background: #ff0444;
+  display: block;
+}
+.cf-info form,
+.cf-succ form {
+  margin: auto;
+}
+.cf-info form label,
+.cf-succ form label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.cf-info form label span,
+.cf-succ form label span {
+  text-transform: capitalize;
+}
+.cf-info form label input,
+.cf-succ form label input {
+  border: 1px solid #938585;
+  outline: none;
+  height: 40px;
+  line-height: 30px;
+  font-size: 16px;
+  width: 100%;
+  padding: 5px 10px;
+}
+.cf-info form #error,
+.cf-succ form #error {
+  margin: 0px 0 10px;
+  display: block;
+  color: red;
+  font-size: 14px;
+}
+.cf-info form button,
+.cf-succ form button {
+  border: none;
+  padding: 5px 30px;
+  width: 100%;
+  background: #ff0444;
+  color: white;
+  height: 40px;
+  font-size: 18px;
+  text-transform: capitalize;
+}
+.cf-info form button.disbled-btn,
+.cf-succ form button.disbled-btn {
+  pointer-events: none;
+  filter: contrast(0.5);
+  position: relative;
+}
+.cf-info form button.disbled-btn::after,
+.cf-succ form button.disbled-btn::after {
+  content: "";
+  background: url(/assets/img/small_loader.gif) no-repeat;
+  background-size: 100%;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  filter: contrast(1);
+  top: 3px;
+  bottom: 0;
+  margin: auto;
+}

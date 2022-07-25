@@ -1,0 +1,5 @@
+a.side-bar-link:hover {
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  color: steelblue !important;
+}

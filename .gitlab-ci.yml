@@ -1,0 +1,372 @@
+stages:
+  - build
+  - test
+  - quality-gate
+  - deploy
+
+# Common job for building the frontend
+build_front-end:
+  stage: build
+  image: node:16
+  script:
+    - rm -fr ~/.cache/
+    - apt-get autoclean
+    - apt-get autoremove
+    - echo "Starting building the react frontend......"
+    - cd iconnect-frontend/
+    - yarn config delete proxy
+    - npm config set registry "http://registry.npmjs.org"
+    - yarn config set registry "http://registry.npmjs.org"
+    - rm -rf node_modules/
+    - rm yarn.lock
+    - yarn install --network-concurrency 1
+    - yarn run build
+  only:
+    changes:
+      - iconnect-frontend/**/*
+      - .gitlab-ci.yml
+
+# Common job for testing the frontend
+test_front-end:
+  stage: test
+  image: node:16
+  script:
+    - rm -fr ~/.cache/
+    - apt-get autoclean
+    - apt-get autoremove
+    - echo "Starting to run tests for the react frontend"
+    - cd iconnect-frontend/
+    - yarn config delete proxy
+    - npm config set registry "http://registry.npmjs.org"
+    - yarn config set registry "http://registry.npmjs.org"
+    - rm -rf node_modules/
+    - rm yarn.lock
+    - yarn install --network-concurrency 1
+    - yarn run test
+  only:
+    changes:
+      - iconnect-frontend/**/*
+      - .gitlab-ci.yml
+
+# Common job for building the backend
+build_back-end:
+  stage: build
+  image: node:16
+  script:
+    - rm -fr ~/.cache/
+    - apt-get autoclean
+    - apt-get autoremove
+    - echo "Starting building the node-express backend....."
+    - cd iconnect-backend/
+    - yarn config delete proxy
+    - yarn install
+    - yarn run build
+  only:
+    changes:
+      - iconnect-backend/**/*
+      - .gitlab-ci.yml
+
+# Common job for testing the backend
+test_back-end:
+  stage: test
+  image: node:16
+  script:
+    - echo "Starting to run tests for the node-express backend....."
+    - cd iconnect-backend/
+    - yarn config delete proxy
+    - yarn install
+    - npm run ci-test
+  artifacts:
+    paths:
+      - iconnect-backend/reports/test-reporter.xml
+    expire_in: 1 week
+  only:
+    changes:
+      - iconnect-backend/**/*
+      - .gitlab-ci.yml
+
+# Common job of quality check of the backend
+quality_back-end:
+  stage: quality-gate
+  image: sonarsource/sonar-scanner-cli
+  script:
+    - echo "Sending the code coverage report to SonarCloud"
+    - cd iconnect-backend/
+    - sonar-scanner -Dsonar.organization=dalhousie-macs-w-22 -Dsonar.projectKey=group-17-asdc -Dsonar.sources=. -Dsonar.host.url=https://sonarcloud.io -Dsonar.javascript.coveragePlugin=jacoco -Dsonar.javascript.lcov.reportPaths=reports/test-reporter.xml -Dsonar.coverage.jacoco.xmlReportPaths=reports/test-reporter.xml -Dsonar.language=js
+  only:
+    changes:
+      - iconnect-backend/**/*
+      - .gitlab-ci.yml
+
+####### FRONTEND DEPLOYMENT JOBS #######
+# Deploying frontend to dev env
+deploy_front-end_to_dev:
+  environment:
+    name: iconnect-front-end-dev
+    url: https://iconnect-front-end-dev.herokuapp.com/
+  stage: deploy
+  image: ruby:latest
+  before_script:
+    - rm -fr ~/.cache/
+    - apt-get autoclean
+    - apt-get autoremove
+    - cd iconnect-frontend/
+    - apt-get update -y
+    - apt-get install -y libssl-dev build-essential wget
+    - wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+    - source /root/.bashrc
+    - nvm install 16.14.0
+    - nvm use 16.14.0
+    - node -v
+    - npm -v
+    - npm install --global yarn
+    - yarn config delete proxy
+    - npm config set registry "http://registry.npmjs.org"
+    - yarn config set registry "http://registry.npmjs.org"
+    - rm -rf node_modules/
+    - rm yarn.lock
+    - yarn install --network-concurrency 1
+    - yarn run build
+    - apt-get update -y
+    - apt-get install rubygems -y
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_FRONT_END_DEV_APP_NAME --api-key=$HEROKU_FRONT_END_API_KEY
+  only:
+    refs:
+      - dev
+    changes:
+      - iconnect-frontend/**/*
+      - .gitlab-ci.yml
+
+# Deploying frontend to qa env
+deploy_front-end_to_qa:
+  environment:
+    name: iconnect-front-end-qa
+    url: https://iconnect-front-end-qa.herokuapp.com/
+  stage: deploy
+  image: ruby:latest
+  before_script:
+    - cd iconnect-frontend/
+    - apt-get update -y
+    - apt-get install -y libssl-dev build-essential wget
+    - wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+    - source /root/.bashrc
+    - nvm install 16.14.0
+    - nvm use 16.14.0
+    - node -v
+    - npm -v
+    - npm install --global yarn
+    - yarn config delete proxy
+    - yarn install
+    - yarn run build
+    - apt-get update -y
+    - apt-get install rubygems -y
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_FRONT_END_QA_APP_NAME --api-key=$HEROKU_FRONT_END_API_KEY
+  only:
+    refs:
+      - qa
+    changes:
+      - iconnect-frontend/**/*
+      - .gitlab-ci.yml
+
+# Deploying frontend to staging env
+deploy_front-end_to_staging:
+  environment:
+    name: iconnect-front-end-staging
+    url: https://iconnect-front-end-staging.herokuapp.com/
+  stage: deploy
+  image: ruby:latest
+  before_script:
+    - cd iconnect-frontend/
+    - apt-get update -y
+    - apt-get install -y libssl-dev build-essential wget
+    - wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+    - source /root/.bashrc
+    - nvm install 16.14.0
+    - nvm use 16.14.0
+    - node -v
+    - npm -v
+    - npm install --global yarn
+    - yarn config delete proxy
+    - yarn install
+    - yarn run build
+    - apt-get update -y
+    - apt-get install rubygems -y
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_FRONT_END_STAGING_APP_NAME --api-key=$HEROKU_FRONT_END_API_KEY
+  only:
+    refs:
+      - stage
+    changes:
+      - iconnect-frontend/**/*
+      - .gitlab-ci.yml
+
+# Deploying frontend to prod env
+deploy_front-end_to_prod:
+  environment:
+    name: iconnect-front-end-prod
+    url: https://iconnect-front-end-prod.herokuapp.com/
+  stage: deploy
+  image: ruby:latest
+  before_script:
+    - cd iconnect-frontend/
+    - apt-get update -y
+    - apt-get install -y libssl-dev build-essential wget
+    - wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+    - source /root/.bashrc
+    - nvm install 16.14.0
+    - nvm use 16.14.0
+    - node -v
+    - npm -v
+    - npm install --global yarn
+    - yarn config delete proxy
+    - yarn install
+    - yarn run build
+    - apt-get update -y
+    - apt-get install rubygems -y
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_FRONT_END_PROD_APP_NAME --api-key=$HEROKU_FRONT_END_API_KEY
+  only:
+    refs:
+      - main
+    changes:
+      - iconnect-frontend/**/*
+      - .gitlab-ci.yml
+
+####### BACKEND DEPLOYMENT JOBS #######
+# Deploying backend to dev env
+deploy_back-end_to_dev:
+  environment:
+    name: iconnect-back-end-dev
+    url: https://iconnect-back-end-dev.herokuapp.com/
+  stage: deploy
+  image: ruby:latest
+  before_script:
+    - cd iconnect-backend/
+    - apt-get update -y
+    - apt-get install -y libssl-dev build-essential wget
+    - wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+    - source /root/.bashrc
+    - nvm install 16.14.0
+    - nvm use 16.14.0
+    - node -v
+    - npm -v
+    - npm install --global yarn
+    - yarn config delete proxy
+    - yarn install
+    - yarn run build
+    - apt-get update -y
+    - apt-get install rubygems -y
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_BACK_END_DEV_APP_NAME --api-key=$HEROKU_BACK_END_API_KEY
+  only:
+    refs:
+      - dev
+    changes:
+      - iconnect-backend/**/*
+      - .gitlab-ci.yml
+
+# Deploying backend to qa env
+deploy_back-end_to_qa:
+  environment:
+    name: iconnect-back-end-qa
+    url: https://iconnect-back-end-qa.herokuapp.com/
+  stage: deploy
+  image: ruby:latest
+  before_script:
+    - cd iconnect-backend/
+    - apt-get update -y
+    - apt-get install -y libssl-dev build-essential wget
+    - wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+    - source /root/.bashrc
+    - nvm install 16.14.0
+    - nvm use 16.14.0
+    - node -v
+    - npm -v
+    - npm install --global yarn
+    - yarn config delete proxy
+    - yarn install
+    - yarn run build
+    - apt-get update -y
+    - apt-get install rubygems -y
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_BACK_END_QA_APP_NAME --api-key=$HEROKU_BACK_END_API_KEY
+  only:
+    refs:
+      - qa
+    changes:
+      - iconnect-backend/**/*
+      - .gitlab-ci.yml
+
+# Deploying backend to staging env
+deploy_back-end_to_staging:
+  environment:
+    name: iconnect-back-end-staging
+    url: https://iconnect-back-end-staging.herokuapp.com/
+  stage: deploy
+  image: ruby:latest
+  before_script:
+    - cd iconnect-backend/
+    - apt-get update -y
+    - apt-get install -y libssl-dev build-essential wget
+    - wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+    - source /root/.bashrc
+    - nvm install 16.14.0
+    - nvm use 16.14.0
+    - node -v
+    - npm -v
+    - npm install --global yarn
+    - yarn config delete proxy
+    - yarn install
+    - yarn run build
+    - apt-get update -y
+    - apt-get install rubygems -y
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_BACK_END_STAGING_APP_NAME --api-key=$HEROKU_BACK_END_API_KEY
+  only:
+    refs:
+      - stage
+    changes:
+      - iconnect-backend/**/*
+      - .gitlab-ci.yml
+
+# Deploying backend to prod env
+deploy_back-end_to_prod:
+  environment:
+    name: iconnect-back-end-prod
+    url: https://iconnect-back-end-prod.herokuapp.com/
+  stage: deploy
+  image: ruby:latest
+  before_script:
+    - cd iconnect-backend/
+    - apt-get update -y
+    - apt-get install -y libssl-dev build-essential wget
+    - wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+    - source /root/.bashrc
+    - nvm install 16.14.0
+    - nvm use 16.14.0
+    - node -v
+    - npm -v
+    - npm install --global yarn
+    - yarn config delete proxy
+    - yarn install
+    - yarn run build
+    - apt-get update -y
+    - apt-get install rubygems -y
+    - gem install dpl
+  script:
+    - dpl --provider=heroku --app=$HEROKU_BACK_END_PROD_APP_NAME --api-key=$HEROKU_BACK_END_API_KEY
+  only:
+    refs:
+      - main
+    changes:
+      - iconnect-backend/**/*
+      - .gitlab-ci.yml

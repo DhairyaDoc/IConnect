@@ -3,9 +3,7 @@ const Idea = require("../../models/idea");
 const Investment = require("../../models/investments");
 const mongoose = require("mongoose");
 
-const stripe = require("stripe")(
-  "sk_test_51Kj8TLDUiun6JENAKgMyfjpvSytJ5hdE5VzsjSp0fbdOp7NxoDXwl1wKJHqNs2EinlIyKFBAYlbGrJVE3Dsib3kk00ocFYfc5u",
-);
+const stripe = require("stripe")("SECRET KEY");
 
 exports.getInvestments = async (req, res) => {
   try {
@@ -44,7 +42,7 @@ exports.getInvestments = async (req, res) => {
           });
         }
         res.status(200).json({ success: true, document });
-      },
+      }
     );
   } catch (error) {
     res.status(500).json({ success: false, document: error.message });
@@ -95,7 +93,7 @@ exports.getInvestmentRequest = async (req, res) => {
             success: true,
           });
         }
-      },
+      }
     );
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -122,7 +120,7 @@ exports.acceptInvestment = async (req, res) => {
           res.status(500).json({ success: false, message: err.message });
         }
         res.status(200).json({ success: true, message: "Investment Accepted" });
-      },
+      }
     );
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -146,7 +144,7 @@ exports.rejectInvestment = async (req, res) => {
           res.status(500).json({ success: false, message: err.message });
         }
         res.status(200).json({ success: true, message: "Investment Rejected" });
-      },
+      }
     );
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -188,7 +186,7 @@ exports.investmentPayment = async (req, res) => {
         }
 
         res.status(200).json({ data: doc, success: true });
-      },
+      }
     );
   } catch (error) {
     res.status(500).json({ data: error.message, success: false });
@@ -204,7 +202,7 @@ exports.makePayment = async (req, res) => {
         email: email,
         source: token.id,
       })
-      .then(customer => {
+      .then((customer) => {
         stripe.charges.create({
           amount: items.amount * 100,
           currency: "cad",
@@ -230,10 +228,10 @@ exports.makePayment = async (req, res) => {
               res.status(500).json({ message: err.message });
             }
             res.status(200).json({ success: true });
-          },
+          }
         );
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(500).json({ message: err.message });
       });
   } catch (error) {
